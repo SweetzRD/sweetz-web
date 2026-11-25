@@ -40,8 +40,10 @@ nav.top .lk a{text-decoration:none;padding:6px 0}
 .bun img{display:block;width:100%;height:100%;object-fit:cover}
 h2{margin:0 0 6px;line-height:1.05;letter-spacing:-.02em;font-size:clamp(32px,4.6vw,48px)}
 .lead{margin:0 0 24px;max-width:38em;font-size:17px}
-.revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:22px}
-.rev{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:16px;padding:16px}
+.revs{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media(min-width:1000px){.revs{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}}
+.rev{display:grid;grid-template-columns:minmax(0,330px) minmax(0,1fr);gap:20px;padding:16px;align-items:start}
+.igf{width:100%;max-width:330px;height:520px;border:0;border-radius:10px;background:#fff;display:block}
 .vid{position:relative;aspect-ratio:9/16;display:grid;place-items:center;overflow:hidden}
 .vid svg.pad{position:absolute;inset:0;width:100%;height:100%}
 .play{position:relative;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);border:2px solid #fff}
@@ -53,7 +55,8 @@ h2{margin:0 0 6px;line-height:1.05;letter-spacing:-.02em;font-size:clamp(32px,4.
 .ig{display:block;font-size:14px;margin-top:8px;text-align:center}
 .empty{display:grid;place-items:center;text-align:center;padding:24px;min-height:200px;font-weight:600;opacity:.75}
 .vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px}
-.yt{overflow:hidden}
+.yt{overflow:hidden;display:block;text-decoration:none;color:inherit}
+.yt .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .yt .th{aspect-ratio:16/9;display:grid;place-items:center;position:relative}
 .yt .th em{position:absolute;right:8px;bottom:8px;font-style:normal;font-size:13px;font-weight:700;padding:1px 6px;background:#000;color:#fff;white-space:nowrap}
 .yt p{margin:0;padding:12px 14px 14px;font-weight:700;line-height:1.3}
@@ -150,8 +153,22 @@ footer .in{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betwee
 .s-c .empty{border:3px dashed #1d1d1d;border-radius:22px}
 .s-c footer{background:#1d1d1d;color:#eee}
 
+@media(prefers-reduced-motion:no-preference){
+.soc a,.buy,.yt,.rev,.world,.rd,.empty,.bun,nav.top .lk a{transition:transform .22s cubic-bezier(.2,.8,.3,1.4),box-shadow .22s,border-color .22s,background-color .22s}
+.soc a:hover,.soc a:focus-visible{transform:translateY(-3px) scale(1.04);border-color:var(--cy);box-shadow:0 8px 24px rgba(47,224,232,.2)}
+.buy:hover,.buy:focus-visible{transform:scale(1.05);box-shadow:0 8px 28px rgba(255,122,26,.45)}
+.live .buy:hover{box-shadow:0 8px 28px rgba(83,252,24,.4)}
+.yt:hover,.yt:focus-visible{transform:translateY(-4px) scale(1.03);box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 0 2px var(--cy)}
+.yt:hover .play{transform:scale(1.15);background:var(--or)}
+.play{transition:transform .2s,background-color .2s}
+.rev:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.45);border-color:var(--or)}
+.world:hover,.rd:hover{transform:translateY(-4px) scale(1.03);border-color:var(--or)}
+.bun:hover{transform:rotate(-3deg) scale(1.04)}
+nav.top .lk a:hover{color:var(--or);transform:translateY(-2px)}
+}
 @media(max-width:760px){.hero{grid-template-columns:minmax(0,1fr)}.bun{max-width:300px;grid-row:1}.live{grid-template-columns:minmax(0,1fr)}.live .buy{min-width:0}}
-@media(max-width:420px){.soc{grid-template-columns:minmax(0,1fr)}.rev{grid-template-columns:minmax(0,1fr)}.rev .vid{max-width:220px;margin:0 auto;width:100%}}
+@media(max-width:420px){.soc{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.rev{grid-template-columns:minmax(0,1fr)}.igf{margin:0 auto}}
 @media(prefers-reduced-motion:no-preference){.eye{animation:blink 5s infinite;transform-origin:center;transform-box:fill-box}@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}}
 </style>
 </head>
@@ -178,7 +195,7 @@ footer .in{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betwee
 
   <section class="band vidband" id="videos"><div class="in">
     <h2>Videos y unboxings</h2>
-    <p class="lead">Gameplays, momentos de los directos y lo que llega a la caja.</p>
+    <p class="lead">Gameplays y series del canal de YouTube.</p>
     <div class="vids" id="vids"></div>
   </div></section>
 
@@ -217,21 +234,14 @@ footer .in{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betwee
 <script>
 {
 const soc=[["YouTube","@SweetzRD","https://youtube.com/@SweetzRD"],["Kick","en vivo","https://kick.com/sweetzrd"],["TikTok","@SweetzRD","https://tiktok.com/@SweetzRD"],["Instagram","@sweetzrd","https://instagram.com/sweetzrd"]];
-const revs=[{t:"DualSense edición GTA VI",tag:"Review",p:["Negro y blanco, los dos","Palmeras en relieve en los grips","Por dentro, un DualSense normal"]}];
-const vids=[["Primer contacto con Vice City","12:40"],["Lo mejor del directo de la semana","9:58"],["Unboxing: qué trae la caja","0:58"],["Kingdom Come: el duelo más largo","24:10"]];
+const revs=[{t:"DualSense edición GTA VI",tag:"Review",ig:"DgJOHBEHEG6",p:["Negro y blanco, los dos","Palmeras en relieve en los grips","Por dentro, un DualSense normal"]}];
+const vids=[["hOhRpiKdVhk","Mi primera vez en Aniimo: ¿Mejor de lo esperado?","1:09:42"],["YWfQ_V3susA","Este juego no te perdona nada | Kingdom Come: Deliverance #1","1:00:24"],["xsfkMqIP0es","Rescaté a Hans y me encontré con una aldea masacrada | KCD #6","26:18"],["kyfT_Yl1XMQ","Cómo conseguir a INFERLUPA en Aniimo","9:57"]];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const $=id=>document.getElementById(id);
 $("soc").innerHTML=soc.map(([n,h,u])=>`<a href="${esc(u)}">${esc(n)}<small>${esc(h)}</small></a>`).join("");
 const pad=`<svg class="pad" viewBox="0 0 90 160" preserveAspectRatio="xMidYMid slice"><rect width="90" height="160" fill="#1c1e20"/><path d="M14 92c6-16 22-18 31-10 9-8 25-6 31 10 4 12-2 24-10 24-6 0-9-6-21-6s-15 6-21 6c-8 0-14-12-10-24z" fill="#f3f3f3" opacity=".9"/><circle cx="62" cy="96" r="3" fill="#2FE0E8"/><circle cx="26" cy="96" r="3" fill="#ff7a1a"/></svg>`;
-$("revs").innerHTML=revs.map(r=>`<article class="rev"><div class="vid">${pad}<span class="play" aria-hidden="true"></span></div><div><span class="tag">${esc(r.tag)}</span><h3>${esc(r.t)}</h3><ul>${r.p.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><a class="buy" href="https://listado.mercadolibre.com.ar/dualsense-gta-vi" target="_blank" rel="noopener sponsored">Ver en Mercado Libre</a><a class="ig" href="https://www.instagram.com/sweetzrd/" target="_blank" rel="noopener">Ver el video en Instagram</a></div></article>`).join("")+`<div class="empty">Acá van las próximas reviews</div>`;
-$("vids").innerHTML=vids.map(([t,d])=>`<article class="yt"><div class="th"><span class="play" aria-hidden="true"></span><em>${esc(d)}</em></div><p>${esc(t)}</p></article>`).join("");
-for(let i=0;i<=n;i++){const a=i/n*Math.PI*2,r=i%2?1:1.06;const x=cx+Math.cos(a)*rx*r,y=cy+Math.sin(a)*ry*r;d+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
-
-const names={a:"neon",b:"vidriera",c:"sticker"},back={neon:"a",vidriera:"b",sticker:"c"};
-const set=s=>{$("site").className="s-"+s;document.querySelectorAll(".pick button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s));};
-const fromHash=()=>{const h=location.hash.slice(1);if(back[h])set(back[h])};
-window.addEventListener("hashchange",fromHash);
-set("a");fromHash();
+$("revs").innerHTML=revs.map(r=>`<article class="rev"><iframe class="igf" src="https://www.instagram.com/reel/${esc(r.ig)}/embed/" title="Video de la review en Instagram" loading="lazy" allowtransparency="true" scrolling="no"></iframe><div><span class="tag">${esc(r.tag)}</span><h3>${esc(r.t)}</h3><ul>${r.p.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><a class="buy" href="https://listado.mercadolibre.com.ar/dualsense-gta-vi" target="_blank" rel="noopener sponsored">Ver en Mercado Libre</a><a class="ig" href="https://www.instagram.com/reel/${esc(r.ig)}/" target="_blank" rel="noopener">Ver el video en Instagram</a></div></article>`).join("")+`<div class="empty">Acá van las próximas reviews</div>`;
+$("vids").innerHTML=vids.map(([id,t,d])=>`<a class="yt" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener"><div class="th"><img src="https://i.ytimg.com/vi/${esc(id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><em>${esc(d)}</em></div><p>${esc(t)}</p></a>`).join("");
 }
 </script>
 </body>
