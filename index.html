@@ -368,5 +368,6 @@ set('sobre');}</script>
 document.addEventListener('mouseover',e=>{const a=e.target.closest('[data-yt],[data-clip]');if(!a||a.dataset.on)return;clearTimeout(tmo);tmo=setTimeout(()=>{a.dataset.on=1;const m=a.querySelector('.media');const f=document.createElement('iframe');f.allow='autoplay; encrypted-media';f.src=a.dataset.yt?`https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&mute=1&controls=0&start=60&playsinline=1&modestbranding=1`:`https://clips.twitch.tv/embed?clip=${a.dataset.clip}&parent=${host}&autoplay=true&muted=true&controls=false`;m.appendChild(f)},350)});
 document.addEventListener('mouseout',e=>{const a=e.target.closest('[data-yt],[data-clip]');if(!a||a.contains(e.relatedTarget))return;clearTimeout(tmo);delete a.dataset.on;a.querySelectorAll('.media iframe').forEach(f=>f.remove())});}
 </script>
+<script>function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"2eb1af4aab3f05895ed43175ee464703"})});</script>
 </body>
 </html>
